@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Exams</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ user.name }} | Manage Exams</h1>
+
+    <a href="{{ url_for('admin_home') }}">← Back to Dashboard</a>
+
+    <h2>All Exams</h2>
+    {% if exams %}
+        <table border="1">
+            <tr>
+                <th>Title</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Actions</th>
+            </tr>
+            {% for exam in exams %}
+            <tr>
+                <td>{{ exam.title }}</td>
+                <td>{{ exam.subject }}</td>
+                <td>{{ exam.date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ exam.duration }} minutes</td>
+                <td>
+                    <!-- Placeholders for future actions -->
+                    <a href="#">Edit</a> |
+                    <a href="#">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No exams have been scheduled yet.</p>
+    {% endif %}
+</body>
+</html>

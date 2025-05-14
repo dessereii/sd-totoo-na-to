@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Submissions</title>
+    <style>
+        body {
+            background-color: #3b2f2f;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding-top: 40px;
+            text-align: center;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #5e443b;
+            padding: 30px;
+            margin: auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px black;
+            position: relative;
+            min-height: 500px;
+            overflow-y: auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: lightyellow;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #8b5e3c;
+            text-align: left;
+        }
+
+        th {
+            background-color: #6b4c3b;
+            color: #ffecb3;
+        }
+
+        td {
+            background-color: #7a5642;
+        }
+
+        td[contenteditable="true"]:focus {
+            outline: 2px solid #ffd699;
+            background-color: #916953;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 6px 12px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background-color: #a96d47;
+        }
+
+        .no-submissions {
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .export-buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .back-home {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .back-home a {
+            padding: 10px 15px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-home a:hover {
+            background-color: #a96d47;
+        }
+    </style>
+</head>
+<body>
+    <h2>Quiz Submissions</h2>
+    <div class="container">
+
+        {% if records %}
+            <table>
+                <thead>
+    <tr>
+        <th>Name</th>
+        <th>Student Number</th>
+        <th>Quiz</th>
+        <th>Answers</th>
+        <th>Total Score</th>
+    </tr>
+</thead>
+<tbody>
+    {% for row in records %}
+    <tr>
+        <td>{{ row[1] }}</td>  <!-- student name -->
+        <td>{{ row[2] }}</td>  <!-- student number -->
+        <td>{{ row[3] }}</td>  <!-- quiz title -->
+        <td>{{ row[4] }}</td>  <!-- answers -->
+        <td contenteditable="true">
+            {{ row[5] if row[5] is not none else 'Ungraded' }}
+            {% if row[5] is none %}
+                <br>
+                <a class="btn" href="{{ url_for('grade_quiz', response_id=row[0]) }}">Grade Now</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+            </table>
+        {% else %}
+            <p class="no-submissions">No quiz submissions yet.</p>
+        {% endif %}
+
+        <div class="export-buttons">
+            <a class="btn" href="{{ url_for('admin_export_quiz_csv') }}">Export CSV</a>
+            <a class="btn" href="{{ url_for('admin_export_quiz_pdf') }}">Export PDF</a>
+        </div>
+    </div>
+
+    <div class="back-home">
+        <a href="{{ url_for('admin_home') }}">Back to Admin Home</a>
+    </div>
+</body>
+</html>

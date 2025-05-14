@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Grade Quiz</title></head>
+<body style="background:#f8f8ff;">
+<h2>Manual Grading</h2>
+<p><strong>Quiz Title:</strong> {{ data[1] }}</p>
+<p><strong>Student Answer(s):</strong></p>
+<pre>{{ data[0] }}</pre>
+
+<form method="POST">
+    <label for="score">Score:</label>
+    <input type="number" name="score" min="0" step="0.5" required>
+    <button type="submit">Submit Score</button>
+</form>
+<a href="{{ url_for('admin_quiz_submissions') }}">Back</a>
+</body>
+</html>

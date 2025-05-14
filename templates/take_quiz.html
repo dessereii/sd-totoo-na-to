@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Take Quiz</title>
+    <style>
+        body {
+            background-color: #3b2f2f;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            background-color: #5e443b;
+            padding: 30px;
+            margin: auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px black;
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .timer {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+        .question {
+            background-color: #4a362f;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .option {
+            margin: 10px 0;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f9f9f9;
+            height: 80px;
+            margin-top: 8px;
+        }
+        button[type="submit"] {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #a44d3a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #c25e4c;
+        }
+    </style>
+    <script>
+        // Timer functionality
+        window.onload = function() {
+            const duration = parseInt("{{ duration }}");
+            let timeLeft = duration * 60; // Convert to seconds
+            
+            const timerDisplay = document.getElementById('timer');
+            
+            const timer = setInterval(function() {
+                const minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                
+                timerDisplay.textContent = `Time Remaining: ${minutes}:${seconds}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    alert("Time's up! Submitting your quiz.");
+                    document.getElementById('quiz-form').submit();
+                }
+                
+                timeLeft--;
+            }, 1000);
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ title }}</h2>
+        <div id="timer" class="timer">Time Remaining: {{ duration }}:00</div>
+        
+        <form id="quiz-form" method="POST">
+            {% for i in range(questions|length) %}
+            <div class="question">
+                <div class="question-text">Question {{ i+1 }}: {{ questions[i].text }}</div>
+                
+                {% if questions[i].type == 'mcq' %}
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q{{ i }}_a" name="q{{ i }}" value="a" required>
+                        <label for="q{{ i }}_a">{{ questions[i].choices.a }}</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q{{ i }}_b" name="q{{ i }}" value="b">
+                        <label for="q{{ i }}_b">{{ questions[i].choices.b }}</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q{{ i }}_c" name="q{{ i }}" value="c">
+                        <label for="q{{ i }}_c">{{ questions[i].choices.c }}</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q{{ i }}_d" name="q{{ i }}" value="d">
+                        <label for="q{{ i }}_d">{{ questions[i].choices.d }}</label>
+                    </div>
+                </div>
+                {% else %}
+                <div>
+                    <textarea name="q{{ i }}" placeholder="Type your answer here..." required></textarea>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <button type="submit">Submit Quiz</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Manage Attendance</title>
+    <style>
+        body {
+            background-color: #3b2f2f;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .container {
+            background-color: #5e443b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            height: 550px;
+            width: 90%;
+            box-shadow: 0px 0px 10px black;
+            position: relative;
+        }
+
+        h2 {
+            margin-top: 5px;
+            color: lightyellow;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #6e4c3a;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            color: white;
+        }
+
+        select, input, button {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .export-links {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .export-links a {
+            margin: 0 10px;
+            padding: 10px 15px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .export-links a:hover {
+            background-color: #a96d47;
+        }
+
+        .back-home {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .back-home a {
+            padding: 10px 15px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-home a:hover {
+            background-color: #a96d47;
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .form-row input, .form-row select {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>All Student Attendance Records</h2>
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul style="color: lightgreen;">
+              {% for msg in messages %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Add Student Attendance Form -->
+        <form method="POST" action="{{ url_for('add_attendance') }}">
+            <div class="form-row">
+                <input type="text" name="student_number" placeholder="Student Number" required style="width: 120px;">
+                <input type="text" name="name" placeholder="Full Name" required style="width: 180px;">
+                <input type="text" name="section" placeholder="Section" required style="width: 100px;">
+                <select name="status" required>
+                    <option value="">-- Status --</option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+                <button type="submit">Add Attendance</button>
+            </div>
+        </form>
+
+        <table>
+            <tr>
+                <th>Student Number</th>
+                <th>Name</th>
+                <th>Section</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+            </tr>
+            {% for id, student_number, name, section, status, timestamp in records %}
+            <tr>
+                <td>{{ student_number }}</td>
+                <td>{{ name }}</td>
+                <td>{{ section }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('edit_attendance', record_id=id) }}">
+                        <select name="status">
+                            <option value="Present" {% if status == 'Present' %}selected{% endif %}>Present</option>
+                            <option value="Absent" {% if status == 'Absent' %}selected{% endif %}>Absent</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+                <td>{{ timestamp }}</td>
+                <td>
+                    <a href="{{ url_for('delete_attendance', record_id=id) }}" onclick="return confirm('Delete this record?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="export-links">
+            <a href="{{ url_for('export_admin_attendance', filetype='csv') }}">Export CSV</a>
+            <a href="{{ url_for('export_admin_attendance', filetype='pdf') }}">Export PDF</a>
+        </div>
+    </div>
+
+    <div class="back-home">
+        <a href="{{ url_for('admin_home') }}">Back to Admin Home</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Attendance</title>
+    <style>
+        body {
+            background-color: #3b2f2f;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .container {
+            background-color: #5e443b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            height: 540px;
+            width: 90%;
+            box-shadow: 0px 0px 10px black;
+            position: relative;
+        }
+        select, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        .table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .export-btns{
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .export-btns a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 15px 10px;
+            background-color: #8b5e3c;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .export-btns a:hover {
+            background-color: #a96d47;
+        }
+        
+        .back-home {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+        .back-home a {
+            padding: 10px 15px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-home a:hover {
+            background-color: #a96d47;
+        }
+    </style>
+</head>
+<body>
+
+        <h2>Attendance for {{ student_number }}</h2>
+
+<div class="container">
+    <form method="POST">
+        <label for="section">Section:</label>
+        <input type="text" name="section" placeholder="Enter Section" required>
+        
+        <label for="status">Mark Attendance:</label>
+        <select name="status" id="status" required>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: lightgreen;">
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <table class="table">
+        <tr>
+            <th>Student Number</th>
+            <th>Name</th>
+            <th>Section</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for student_number, name, section, status, timestamp in records %}
+        <tr>
+            <td>{{ student_number }}</td>
+            <td>{{ name }}</td>
+            <td>{{ section }}</td>
+            <td>{{ status }}</td>
+            <td>{{ timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="export-btns">
+        <a href="{{ url_for('export_student_attendance', filetype='csv') }}">Download CSV</a>
+        <a href="{{ url_for('export_student_attendance', filetype='pdf') }}">Download PDF</a>
+    </div>
+</div>
+
+    
+    <div class="back-home">
+        <a href="{{ url_for('student_home') }}">Back to Student Home</a>
+    </div>
+
+</body>
+</html>

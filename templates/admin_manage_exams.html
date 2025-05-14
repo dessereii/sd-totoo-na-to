@@ -1,0 +1,234 @@
+<!--admin_manage_exams.html-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Exams</title>
+   <style>
+        body {
+            background-color: #3b2f2f;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #5e443b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            width: 99%;
+            box-shadow: 0px 0px 10px black;
+            position: relative;
+        }
+
+        h2 {
+            margin-top: 10px;
+            color: lightyellow;
+        }
+
+        .question-block {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: #6e4c3a;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, textarea {
+            width: 99%;
+            padding: 8px;
+            margin-top: 4px;
+            margin-bottom: 15px;
+            background-color: #f5e6d8;
+            border: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .row-flex {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .row-flex .form-group {
+            flex: 1;
+        }
+
+        .row-flex .form-group input {
+            width: 100%;
+        }
+
+        button {
+            background-color: #8b5e3c;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #a96d47;
+        }
+
+        hr {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            text-align: left;
+        }
+
+         .back-home {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+        .back-home a {
+            padding: 10px 15px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-home a:hover {
+            background-color: #a96d47;
+        }
+    </style>
+    <script>
+        let questionCount = 1;
+        const maxQuestions = 100;
+
+        function addQuestion() {
+            if (questionCount >= maxQuestions) {
+                alert("Maximum of 100 questions reached.");
+                return;
+            }
+
+            questionCount++;
+            const container = document.getElementById("question-container");
+
+            const block = document.createElement("div");
+            block.className = "question-block";
+            block.innerHTML = `
+                <h3>Question ${questionCount}</h3>
+                <label for="question${questionCount}">Question Text:</label>
+                <textarea name="question${questionCount}" required></textarea>
+
+                <label for="type${questionCount}">Type:</label>
+                <select name="type${questionCount}" onchange="toggleMCQFields(this, ${questionCount})" required>
+                    <option value="">-- Select Type --</option>
+                    <option value="mcq">Multiple Choice</option>
+                    <option value="short">Short Answer</option>
+                </select>
+
+                <div id="mcq-fields${questionCount}" style="display:none;">
+                    <label>Choice A:</label><input type="text" name="choice${questionCount}a">
+                    <label>Choice B:</label><input type="text" name="choice${questionCount}b">
+                    <label>Choice C:</label><input type="text" name="choice${questionCount}c">
+                    <label>Choice D:</label><input type="text" name="choice${questionCount}d">
+                    <label>Correct Answer (a/b/c/d):</label><input type="text" name="correct${questionCount}" maxlength="1">
+                </div>
+                <button type="button" onclick="deleteQuestionBlock(this)">Delete Question</button>
+            `;
+            container.appendChild(block);
+        }
+
+        function toggleMCQFields(select, i) {
+            const mcqFields = document.getElementById(`mcq-fields${i}`);
+            mcqFields.style.display = select.value === "mcq" ? "block" : "none";
+        }
+
+        function deleteQuestionBlock(button) {
+            const block = button.closest('.question-block');
+            block.remove();
+        }
+    </script>
+</head>
+<body>
+        <h2>Create New Exam</h2>
+
+<div class="container">
+    <form method="POST">
+        <div class="row-flex">
+            <div class="form-group">
+                <label>Exam Title:</label>
+                <input type="text" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Duration (minutes):</label>
+                <input type="number" name="duration" required>
+            </div>
+        </div>
+
+            <div class="form-group">
+    <label>Term:</label>
+    <select name="term" required>
+        <option value="">-- Select Term --</option>
+        <option value="Prelim">Prelim</option>
+        <option value="Midterms">Midterms</option>
+        <option value="Finals">Finals</option>
+    </select>
+</div>
+
+
+        <div id="question-container">
+            <!-- First question block -->
+            <div class="question-block">
+                <h3>Question 1</h3>
+                <label>Question Text:</label>
+                <textarea name="question1" required></textarea>
+
+                <label>Type:</label>
+                <select name="type1" onchange="toggleMCQFields(this, 1)" required>
+                    <option value="">-- Select Type --</option>
+                    <option value="mcq">Multiple Choice</option>
+                    <option value="short">Short Answer</option>
+                </select>
+
+                <div id="mcq-fields1" style="display:none;">
+                    <label>Choice A:</label><input type="text" name="choice1a">
+                    <label>Choice B:</label><input type="text" name="choice1b">
+                    <label>Choice C:</label><input type="text" name="choice1c">
+                    <label>Choice D:</label><input type="text" name="choice1d">
+                    <label>Correct Answer (a/b/c/d):</label><input type="text" name="correct1" maxlength="1">
+                </div>
+                <button type="button" onclick="deleteQuestionBlock(this)">Delete Question</button>
+            </div>
+        </div>
+
+        <button type="button" onclick="addQuestion()">+ Add Question</button>
+        <button type="submit">Create Exam</button>
+    </form>
+
+    <hr>
+    <h2>Existing Exams</h2>
+    <ul>
+        {% for exam in exams %}
+            <li><strong>{{ exam[1] }}</strong> - {{ exam[2] }} minutes</li>
+        {% endfor %}
+    </ul>
+
+    <div class="back-home">
+        <a href="{{ url_for('admin_home') }}">Back to Admin Home</a>
+    </div>
+    
+</div>
+</body>
+</html>

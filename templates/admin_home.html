@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Home</title>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='bg/bldg.1.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding-top: 0;
+            margin: 0;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 0px;
+            height: 50px;
+            width: 94.7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+        .logo-bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .logo-bar img {
+            height: 60px;
+        }
+
+        .top-links {
+            display: flex;
+            gap: 4px;
+        }
+
+        .top-links a {
+            background-color: rgba(125, 26, 26, 0.741);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-links a:hover {
+            background-color: rgba(96, 40, 40, 0.9);
+            text-decoration: none;
+        }
+
+        .container {
+            background-color: rgba(86, 60, 52, 0.773); 
+            padding: 1px 40px; 
+            margin: 0 auto;
+            height: 70px;
+            width: cover;
+            border-radius: 0;
+            font-size: 15px; 
+            line-height: 0.3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flex-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-top: 10px;
+            padding-bottom: 25px;
+        }
+
+       .flex-line h2 {
+            margin: 0;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .flex-line .info {
+            text-align: right;
+            margin: 0;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .info {
+            text-align: left;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .logout {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            padding: 15px 27px;
+            background-color: #a44d3a;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logout:hover {
+            background-color: #c25e4c;
+        }
+
+       .footer-credit {
+            position: fixed;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #000000;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.625);
+            width: 1560px;
+            padding: 5px 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header style="flex-direction: column; align-items: stretch; height: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo-bar">
+                <img src="{{ url_for('static', filename='coeng/logo.png') }}" alt="CoEng Logo">
+                <img src="{{ url_for('static', filename='urs/urs logo.png') }}" alt="URS Logo">
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                <div class="top-links">
+                    <a href="{{ url_for('admin_attendance') }}">Manage Attendance</a>
+                    <a href="{{ url_for('admin_manage_quizzes') }}">Manage Quizzes</a>
+                    <a href="{{ url_for('admin_manage_exams') }}">Manage Exams</a>
+                    <a href="{{ url_for('admin_quiz_submissions') }}">Quiz Responses</a>
+                    <a href="{{ url_for('admin_exam_submissions') }}">Exam Responses</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div><h2>Welcome, {{ user[1] }}</h2></div>
+        <div class="info">
+            <p><strong>Email:</strong> {{ user[2] }}</p>
+            <p><strong>Admin Email:</strong> {{ user[6] }}</p>
+        </div>
+    </div>
+
+    <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+
+    <div class="footer-credit">
+        © to Ma. Desserei C. Emaas, Alexa Kate B. Mamato and Alexis L. Daza
+    </div>
+
+</body>
+</html>

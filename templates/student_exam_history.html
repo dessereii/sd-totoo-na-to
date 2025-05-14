@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Exam History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3b2f2f;
+            color: white;
+            padding: 30px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgb(94, 68, 59);
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            height: 535px;
+            width: 90%;
+            box-shadow: 0px 0px 10px black;
+            position: relative;
+        }
+
+        h2 {
+            color: #ffecb3;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #af866f;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #8b5e3c;
+            text-align: left;
+            color: #fff9e1;
+        }
+
+        th {
+            background-color: #8b5e3c;
+        }
+
+        tr:nth-child(even) {
+            background-color: #a5755a;
+        }
+
+        .no-records {
+            color: #ffe0b2;
+            padding: 15px;
+            background-color: #af866f;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .export-buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #a96d47;
+        }
+
+        .back-home {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .back-home a {
+            padding: 15px 20px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-home a:hover {
+            background-color: #a96d47;
+        }
+    </style>
+</head>
+<body>
+    <h2>My Exam Records</h2>
+    <div class="container">
+
+        {% if records %}
+        <table>
+            <tr>
+                <th>Exam Title</th>
+                <th>Score</th>
+            </tr>
+            {% for rec in records %}
+            <tr>
+                <td>{{ rec[0] }}</td>
+                <td>{{ rec[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div class="no-records">No exam records found.</div>
+        {% endif %}
+
+        <div class="export-buttons">
+            <a href="{{ url_for('export_student_exam', filetype='csv') }}" class="btn">Export as CSV</a>
+            <a href="{{ url_for('export_student_exam', filetype='pdf') }}" class="btn">Export as PDF</a>
+        </div>
+
+        <div class="back-home">
+            <a href="{{ url_for('student_exam_results') }}">Back</a>
+        </div>
+    </div>
+</body>
+</html>

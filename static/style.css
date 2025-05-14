@@ -1,0 +1,28 @@
+body {
+    background-color: #f3f0ed;
+    font-family: Arial, sans-serif;
+    color: #3b2f2f;
+}
+.container {
+    background-color: #fff;
+    border: 1px solid #c8bfbf;
+    padding: 2em;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+input, select {
+    border: 1px solid #a1866f;
+}
+button {
+    background-color: #6d4c41;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+}
+button:hover {
+    background-color: #5d4037;
+}
+.navbar {
+    background-color: #3b2f2f;
+    color: white;
+    padding: 1em;
+}
